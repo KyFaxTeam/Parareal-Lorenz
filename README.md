@@ -6,11 +6,11 @@ Ce projet consiste à simuler et visualiser le comportement d'une particule acti
 
 Le système d'équations différentielles ordinaires (EDO) à résoudre est le suivant :
 
-```
-\dot{X} = Y - X
-\dot{Y} = -\frac{1}{\tau} Y + X Z
-\dot{Z} = R - \frac{1}{\tau} Z - X Y
-```
+
+$\dot{X} = Y - X$
+$\dot{Y} = -\frac{1}{\tau} Y + X Z$
+$\dot{Z} = R - \frac{1}{\tau} Z - X Y$
+
 
 Où :
 - X : Vitesse horizontale de la particule
@@ -201,56 +201,57 @@ L'algorithme Parareal permet de paralléliser l'intégration temporelle d'EDOs e
 L'algorithme converge après quelques itérations, avec une accélération potentielle qui dépend du nombre de processus, de la taille du problème, et du taux de convergence.
 
 ## Side-by-Side Comparison of RK4 and Parareal
+## Comparaison côte à côte de RK4 et Parareal
 
-This project now includes tools for detailed side-by-side comparison of the RK4 and Parareal methods. These comparisons help visualize the numerical differences between the methods and analyze their relative accuracy.
+Ce projet inclut maintenant des outils pour une comparaison détaillée côte à côte des méthodes RK4 et Parareal. Ces comparaisons aident à visualiser les différences numériques entre les méthodes et à analyser leur précision relative.
 
-### Running Comparisons
+### Exécuter des comparaisons
 
-You can run comparisons in two ways:
+Vous pouvez exécuter des comparaisons de deux façons:
 
-1. **Using Makefile targets**:
+1. **En utilisant les cibles du Makefile**:
 ```bash
-# Compare specific scenarios
-make compare_scenario1  # Non-walker (tau=0.5)
-make compare_scenario2  # Regular walker (tau=2.0)
-make compare_scenario3  # Chaotic walker (tau=5.0)
-make compare_scenario4  # Oscillations with drift (tau=8.9)
+# Comparer des scénarios spécifiques
+make compare_scenario1  # Non-marcheur (tau=0.5)
+make compare_scenario2  # Marcheur régulier (tau=2.0)
+make compare_scenario3  # Marcheur chaotique (tau=5.0)
+make compare_scenario4  # Oscillations avec dérive (tau=8.9)
 
-# Run all comparison scenarios
+# Exécuter tous les scénarios de comparaison
 make compare_all
 ```
 
-2. **Using the plotter script directly**:
+2. **En utilisant directement le script plotter**:
 ```bash
-# Compare a specific tau value
+# Comparer une valeur tau spécifique
 python plotter.py compare --tau=5.0 --output=output/custom_comparison
 
-# Run a comprehensive analysis of all available tau values
+# Exécuter une analyse complète de toutes les valeurs tau disponibles
 python plotter.py analysis
 ```
 
-### Comparison Features
+### Fonctionnalités de comparaison
 
-The comparison toolkit provides:
+La boîte à outils de comparaison fournit:
 
-1. **Side-by-Side Time Evolution**: Plots of X, Y, and Z variables over time for both methods
-2. **Error Analysis**: Calculation of maximum absolute error and L2 norm error for each variable
-3. **Phase Portraits**: Comparison of phase portraits in X-Y, X-Z, and Y-Z planes
-4. **3D Trajectory Visualization**: 3D plots of the complete trajectory for both methods
-5. **Summary Statistics**: Quantitative comparison metrics between the two methods
+1. **Évolution temporelle côte à côte**: Graphiques des variables X, Y et Z au fil du temps pour les deux méthodes
+2. **Analyse d'erreur**: Calcul de l'erreur absolue maximale et de l'erreur de norme L2 pour chaque variable
+3. **Portraits de phase**: Comparaison des portraits de phase dans les plans X-Y, X-Z et Y-Z
+4. **Visualisation de trajectoire 3D**: Graphiques 3D de la trajectoire complète pour les deux méthodes
+5. **Statistiques récapitulatives**: Métriques de comparaison quantitatives entre les deux méthodes
 
-### Error Analysis
+### Analyse d'erreur
 
-The error analysis compares the RK4 solution (considered as reference) with the Parareal solution. Since Parareal typically produces fewer output points, cubic interpolation is used to match time points for comparison.
+L'analyse d'erreur compare la solution RK4 (considérée comme référence) avec la solution Parareal. Comme Parareal produit généralement moins de points de sortie, une interpolation cubique est utilisée pour faire correspondre les points temporels pour la comparaison.
 
-Error metrics include:
-- **Maximum Absolute Error**: The largest difference between RK4 and Parareal solutions
-- **L2 Norm Error**: The root-mean-square error across all time points
+Les métriques d'erreur incluent:
+- **Erreur absolue maximale**: La plus grande différence entre les solutions RK4 et Parareal
+- **Erreur de norme L2**: L'erreur quadratique moyenne sur tous les points temporels
 
-### Output Files
+### Fichiers de sortie
 
-Comparison results are saved in the `output/comparisons/` directory with the following files:
-- `comparison_tau<value>_comparison.png`: Main comparison plots
-- `comparison_tau<value>_phase_portraits.png`: Phase portrait comparisons
-- `error_vs_tau.png`: Summary plot showing how error varies with tau parameter
+Les résultats de comparaison sont enregistrés dans le répertoire `output/comparisons/` avec les fichiers suivants:
+- `comparison_tau<valeur>_comparison.png`: Graphiques de comparaison principaux
+- `comparison_tau<valeur>_phase_portraits.png`: Comparaisons de portraits de phase
+- `error_vs_tau.png`: Graphique récapitulatif montrant comment l'erreur varie avec le paramètre tau
 
