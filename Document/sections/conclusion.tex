@@ -1,0 +1,150 @@
+\section{Conclusion et perspectives}
+
+\subsection{Synthèse des résultats}
+
+Cette étude a permis de démontrer l'efficacité de l'algorithme Parareal pour la parallélisation temporelle du système de Lorenz modifié. Les principaux résultats obtenus sont :
+
+\begin{itemize}
+    \item Une accélération significative du temps de calcul.
+    \item Une préservation de la précision numérique comparable à la méthode RK4 séquentielle
+    \item Une convergence robuste même dans les régimes chaotiques du système
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        % Définition des styles
+        \tikzset{
+            block/.style={rectangle, draw, fill=primaryblue!20, 
+                         text width=2.5cm, text centered, minimum height=1cm},
+            arrow/.style={->, thick, >=latex}
+        }
+        
+        % Diagramme de synthèse
+        \node[block] (parallelization) at (0,0) {Parallélisation temporelle};
+        \node[block] (performance) at (-3,-2) {Performance};
+        \node[block] (precision) at (0,-2) {Précision};
+        \node[block] (scalability) at (3,-2) {Extensibilité};
+        
+        % Connexions
+        \draw[arrow] (parallelization) -- (performance);
+        \draw[arrow] (parallelization) -- (precision);
+        \draw[arrow] (parallelization) -- (scalability);
+        
+        % Annotations
+        \node[text width=2cm, align=center] at (-3,-3) {Speedup};
+        \node[text width=2cm, align=center] at (0,-3) {Erreur < $10^{-4}$};
+        \node[text width=2cm, align=center] at (3,-3) {Jusqu'à 6 processeurs dans notre cas};
+    \end{tikzpicture}
+    \caption{Synthèse des performances obtenues}
+    \label{fig:synthesis}
+\end{figure}
+
+% \subsection{Contributions principales}
+
+% Notre travail a apporté plusieurs contributions significatives :
+
+% \begin{enumerate}
+%     \item \textbf{Méthodologique}
+%     \begin{itemize}
+%         \item Développement d'une implémentation robuste de l'algorithme Parareal
+%         \item Adaptation spécifique pour les systèmes chaotiques
+%         \item Optimisation des communications MPI
+%     \end{itemize}
+    
+%     \item \textbf{Technique}
+%     \begin{itemize}
+%         \item Framework modulaire et extensible
+%         \item Outils d'analyse et de visualisation
+%         \item Documentation détaillée du code
+%     \end{itemize}
+    
+%     \item \textbf{Scientifique}
+%     \begin{itemize}
+%         \item Validation de l'approche pour le système de Lorenz
+%         \item Analyse approfondie des performances
+%         \item Identification des limites et contraintes
+%     \end{itemize}
+% \end{enumerate}
+
+\subsection{Limitations actuelles}
+
+Malgré les résultats prometteurs, certaines limitations ont été identifiées :
+
+\begin{itemize}
+    \item \textbf{Dépendance temporelle} : La méthode Parareal est sensible à la taille des intervalles
+    \item \textbf{Divergence de la solution en utilisant certains solveurs grossiers} : La méthode d'Euler peut introduire des erreurs significatives qui ne peuvent pas être corrigées par le solveur fin. C'est cette contrainte qui a conduit à l'utilisation de la méthode RK2 ou AB3 (Adams-Bashfort) comme solveur grossier.
+    \item \textbf{Scalabilité} : Nous n'avons pas pu étudié l'efficacité en augmentant le nombre de processseurs au delà de 6.
+    \item \textbf{Régimes chaotiques} : Convergence plus lente dans certains régimes 
+\end{itemize}
+
+% \subsection{Perspectives futures}
+
+% Plusieurs pistes d'amélioration et d'extension ont été identifiées :
+
+% \begin{table}[h]
+%     \centering
+%     \begin{tabular}{@{}llc@{}}
+%         \toprule
+%         \textbf{Aspect} & \textbf{Amélioration proposée} & \textbf{Priorité} \\
+%         \midrule
+%         Algorithmique & Adaptation dynamique des sous-intervalles & Haute \\
+%         Performance & Hybridation MPI/OpenMP & Moyenne \\
+%         Précision & Solveurs d'ordre supérieur & Basse \\
+%         Applicatif & Extension à d'autres systèmes & Moyenne \\
+%         \bottomrule
+%     \end{tabular}
+%     \caption{Programme de développement futur}
+%     \label{tab:future_work}
+% \end{table}
+
+% \subsubsection{Améliorations algorithmiques}
+
+% \begin{itemize}
+%     \item \textbf{Adaptation dynamique}
+%     \begin{itemize}
+%         \item Ajustement automatique des sous-intervalles
+%         \item Critères de convergence adaptatifs
+%         \item Équilibrage de charge intelligent
+%     \end{itemize}
+    
+%     \item \textbf{Hybridation des méthodes}
+%     \begin{itemize}
+%         \item Combinaison avec la parallélisation spatiale
+%         \item Intégration de techniques multi-grilles
+%         \item Approches multi-niveaux
+%     \end{itemize}
+% \end{itemize}
+
+% \subsection{Impact et applications}
+
+% Les résultats de cette étude ouvrent la voie à plusieurs applications :
+
+% \begin{itemize}
+%     \item \textbf{Simulation numérique}
+%     \begin{itemize}
+%         \item Modélisation climatique
+%         \item Dynamique des fluides
+%         \item Systèmes complexes
+%     \end{itemize}
+    
+%     \item \textbf{Applications industrielles}
+%     \begin{itemize}
+%         \item Optimisation de processus
+%         \item Contrôle en temps réel
+%         \item Prédiction de comportements
+%     \end{itemize}
+% \end{itemize}
+
+% \subsection{Recommandations}
+
+% Pour les développements futurs, nous recommandons :
+
+% \begin{enumerate}
+%     \item L'adoption d'une approche incrémentale pour les améliorations
+%     \item La mise en place de benchmarks standardisés
+%     \item Le développement d'outils d'analyse automatisés
+%     \item La collaboration avec d'autres équipes de recherche
+% \end{enumerate}
+
+% Cette étude constitue une base solide pour de futures recherches dans le domaine de la parallélisation temporelle des systèmes dynamiques. Les résultats obtenus démontrent le potentiel de l'algorithme Parareal pour accélérer la simulation de systèmes chaotiques, ouvrant ainsi de nouvelles perspectives pour l'étude des systèmes complexes.

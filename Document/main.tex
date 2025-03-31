@@ -1,0 +1,182 @@
+\documentclass[11pt,a4paper]{article}
+
+% Configuration de l'encodage et support du français
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}  % Police avec un meilleur support des accents
+\usepackage{eurosym}  % Pour le symbole euro et autres symboles européens
+
+% Mise en page
+\usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{titletoc}
+
+% Mathématiques et sciences
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{physics}
+\usepackage{siunitx}
+
+% Graphiques et couleurs
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepackage{xcolor}
+
+% Tableaux et listes
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{multirow}
+
+% Images et figures
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{subcaption}
+
+% Code et algorithmes
+\usepackage{listings}
+\usepackage{algorithm2e}
+\usepackage[newfloat]{minted}
+
+% Configuration de listings pour les accents
+\lstset{
+    inputencoding=utf8,
+    extendedchars=true,
+    literate=%
+    {é}{{\'{e}}}1
+    {è}{{\`{e}}}1
+    {ê}{{\^{e}}}1
+    {ë}{{\¨{e}}}1
+    {à}{{\`{a}}}1
+    {â}{{\^{a}}}1
+    {î}{{\^{i}}}1
+    {ï}{{\¨{i}}}1
+    {ô}{{\^{o}}}1
+    {ù}{{\`{u}}}1
+    {û}{{\^{u}}}1
+    {ü}{{\¨{u}}}1
+    {ç}{{\c{c}}}1
+}
+
+% Références et bibliographie
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+\usepackage[style=alphabetic,backend=biber]{biblatex}
+\addbibresource{references.bib}
+
+% Définition des couleurs personnalisées
+\definecolor{primaryblue}{HTML}{1f77b4}
+\definecolor{secondaryblue}{HTML}{7BA6C4}
+\definecolor{accentorange}{HTML}{ff7f0e}
+\definecolor{backgroundgray}{HTML}{f7f7f7}
+\definecolor{tertiarygreen}{HTML}{2ca02c}
+
+% Configuration des titres
+\titleformat{\section}
+{\color{primaryblue}\Large\bfseries}
+{\thesection}{1em}{}[\titlerule]
+
+\titleformat{\subsection}
+{\color{secondaryblue}\large\bfseries}
+{\thesubsection}{1em}{}
+
+% Configuration des en-têtes et pieds de page
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textit{Parallélisation temporelle du système de Lorenz}}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{\textit{\today}}
+
+% Configuration des listings de code
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    commentstyle=\color{green!60!black},
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    frame=single,
+    backgroundcolor=\color{backgroundgray},
+    tabsize=4
+}
+
+% Paramètres de l'algorithme
+\SetAlgoLined
+\SetKwInput{KwInput}{Entrées}
+\SetKwInput{KwOutput}{Sorties}
+
+% Configuration de pgfplots
+\pgfplotsset{
+    every axis/.append style={
+        line width=1pt,
+        tick style={thin},
+        grid style={thin,gray!30},
+        grid=major,
+        legend style={font=\small}
+    }
+}
+
+% Titre du document
+\title{%
+    \textcolor{primaryblue}{\Huge\textbf{Parallélisation temporelle pour la résolution\\du système de Lorenz}}\\[1cm]
+    \textcolor{secondaryblue}{\Large Une approche avec l'algorithme Parareal}\\[1cm]
+    \vspace{0.5cm}
+    \Large\textcolor{tertiarygreen}{
+        Elonm AHOUANYE\\
+        Yanel AÏNA\\[0.5cm]
+        École Nationale Supérieure de Génie Mathématique et Modélisation\\
+        (ENSGMM Abomey)\\[0.5cm]
+        \large\textit{Supervisé par}\\
+        \normalsize{Dr. DANDOGBESSI Bruno}\\
+    }
+}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\clearpage
+\begin{abstract}
+Ce document présente une étude approfondie de la parallélisation temporelle appliquée au système de Lorenz modifié pour une particule active guidée par sa mémoire. Nous explorons l'implémentation de l'algorithme Parareal comme alternative à la méthode RK4 séquentielle traditionnelle, en mettant l'accent sur les aspects théoriques et pratiques de cette approche novatrice.
+\end{abstract}
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+\clearpage
+
+% Introduction
+\input{sections/introduction}
+\clearpage
+
+% Resolution rk4 
+\input{sections/rk4.tex}
+\clearpage
+
+% Algorithme Parareal
+\input{sections/algorithme_parareal}
+\clearpage
+
+% Implémentation
+\input{sections/implementation}
+\clearpage
+
+% Résultats
+\input{sections/resultats}
+\clearpage
+
+% Conclusion
+\input{sections/conclusion}
+\clearpage
+
+% Références
+\printbibliography[title=Références]
+
+\end{document}

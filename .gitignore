@@ -1,0 +1,34 @@
+// ignore the file of compilation of latex
+
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.idx
+*.ilg
+*.ind
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.run.xml
+*.pdfsync
+*.synctex
+*.xdv
+*.nav
+*.snm
+*.vrb
+*.xdy
+
+
+plan_latex.md
+plan.md
+README.md
+derivation_lorenz.md
+parareal.md
+
+.md
+
+// ignore file 

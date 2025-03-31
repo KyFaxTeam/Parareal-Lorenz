@@ -1,0 +1,230 @@
+\section{Introduction}
+
+\subsection{Contexte physique : particules actives guidées par la mémoire}
+Les systèmes de particules actives représentent un domaine de la physique moderne, où le comportement des particules est influencé par leur propre histoire. Un exemple particulièrement intéressant de tels systèmes est celui des gouttes "marcheuses" sur un bain liquide vibrant verticalement, où une goutte interagit avec les ondes qu'elle génère elle-même.
+
+Dans ce système, chaque impact de la goutte sur la surface du bain crée une onde stationnaire localisée. Ces ondes persistent pendant un certain temps, formant une "mémoire" du passage de la goutte. Cette mémoire ondulatoire guide ensuite le mouvement de la goutte, créant une rétroaction complexe entre la particule et son environnement auto-généré.
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale=0.8]
+        % Surface du bain au repos
+        \draw[->] (-4,0) -- (4,0) node[right] {$x$};
+        
+        % Onde de surface
+        \draw[blue, thick, smooth, domain=-4:4, samples=100] 
+            plot (\x,{0.5*sin(2*\x r)*exp(-0.1*abs(\x))});
+        
+        % Goutte
+        \fill[red] (0,0) circle (0.1);
+        
+        % Vecteur vitesse
+        \draw[->,thick,primaryblue] (0,0) -- (0.8,0.2);
+        
+        % Ondes précédentes (mémoire)
+        \foreach \x in {-3,-2,...,3} {
+            \draw[blue!30, smooth, domain=\x-0.5:\x+0.5] 
+                plot (\x,{0.3*sin(2*\x r)*exp(-0.5*abs(\x))});
+        }
+        
+        % Labels
+        \node[above right] at (0.8,0.2) {$\vec{v}$};
+        \node[above] at (0,-1) {Particule active};
+        \node[below] at (0,-1.5) {Champ d'ondes avec mémoire};
+    \end{tikzpicture}
+    \caption{Particule active interagissant avec son champ d'ondes auto-généré}
+    \label{fig:schema_particule}
+\end{figure}
+
+\subsection{Du système physique au modèle mathématique}
+La modélisation de ce système commence par la description du mouvement horizontal de la particule. En moyenne sur un cycle de rebond vertical, la dynamique peut être décrite par une équation de trajectoire intégro-différentielle :
+
+\begin{equation}
+\ddot{x}_d + \dot{x}_d = F_{self} + F_{bias}
+\label{eq:mouvement_initial}
+\end{equation}
+
+où $x_d$ représente la position horizontale de la particule, et les termes de droite incluent :
+\begin{itemize}
+    \item $F_{self}$ : la force exercée par le champ d'ondes auto-généré
+    \item $F_{bias}$ : une éventuelle force de biais externe
+\end{itemize}
+
+La force $F_{self}$ due au champ d'ondes s'exprime comme une intégrale sur l'histoire de la particule :
+
+\begin{equation}
+F_{self} = -R\int_{-\infty}^t W'(x_d(t)-x_d(s)) e^{-\frac{t-s}{\tau}} ds
+\label{eq:force_memoire}
+\end{equation}
+
+où :
+\begin{itemize}
+    \item $R$ est l'amplitude adimensionnée des ondes générées
+    \item $\tau$ est le temps caractéristique de décroissance des ondes (paramètre de mémoire)
+    \item $W(x)$ représente la forme des ondes générées
+\end{itemize}
+
+\subsection{Émergence du système de Lorenz}
+Une simplification remarquable de ce système complexe apparaît lorsqu'on considère une forme d'onde idéalisée $W(x) = \cos(x)$. Cette approximation, bien que simple, capture les caractéristiques essentielles de la dynamique tout en permettant une transformation mathématique élégante.
+
+En introduisant les variables :
+\begin{align}
+X &= \dot{x}_d \quad \text{(vitesse de la particule)} \\
+Y &= F_{self} \quad \text{(force de mémoire)} \\
+Z &= R\int_{-\infty}^t \cos(x_d(t)-x_d(s)) e^{-\frac{t-s}{\tau}} ds \quad \text{(hauteur du champ d'onde à la position de la particule)}
+\end{align}
+
+Le système se transforme en un ensemble d'équations différentielles ordinaires :
+
+\begin{equation}
+\begin{cases}
+\dot{X} = Y - X + F_{bias} \\
+\dot{Y} = -\frac{1}{\tau} Y + XZ \\
+\dot{Z} = R - \frac{1}{\tau} Z - XY
+\end{cases}
+\label{eq:lorenz_system}
+\end{equation}
+
+Ce système est équivalent au célèbre système de Lorenz lorsque $F_{bias} = 0$.
+
+\subsection{Problématique}
+La résolution numérique de ce système présente plusieurs défis :
+
+\begin{enumerate}
+    \item \textbf{Non-linéarité} : Les termes de couplage $XZ$ et $XY$ induisent des comportements complexes
+    \item \textbf{Sensibilité} : Le système peut présenter une forte dépendance aux conditions initiales
+    \item \textbf{Échelles multiples} : Le paramètre $\tau$ introduit différentes échelles de temps
+\end{enumerate}
+
+\subsection{Reconstruction de la trajectoire physique}
+Une fois le système de Lorenz résolu numériquement, la reconstruction de la trajectoire physique de la particule nécessite deux étapes :
+
+\begin{enumerate}
+    \item \textbf{Obtention de la vitesse} : La variable $X$ du système de Lorenz donne directement la vitesse de la particule :
+    \begin{equation}
+        \dot{x}_d = X
+    \end{equation}
+    
+    \item \textbf{Calcul de la position} : La position $x_d$ est obtenue par intégration de la vitesse :
+    \begin{equation}
+        x_d(t) = x_d(0) + \int_0^t X(s)\,ds
+    \end{equation} où $x_d(0)$ est la position initiale de la particule (souvent fixée à 0 pour simplifier).
+
+    Cette reconstruction peut être réalisée numériquement en utilisant la méthode des trapèzes ou en intégrant directement les points générés par la méthode RK4. Par exemple, si l'on utilise RK4 pour résoudre le système de Lorenz, on peut calculer la position à chaque pas de temps :
+    \begin{equation}
+        x_d(t_{n+1}) = x_d(t_n) + \frac{h}{2} (X(t_n) + X(t_{n+1}))
+    \end{equation}
+    où \( h \) est le pas de temps et \( t_n = t_0 + n h \).
+    
+\end{enumerate}
+
+% Cette reconstruction est essentielle pour :
+% \begin{itemize}
+%     \item Visualiser la trajectoire réelle de la particule
+%     \item Analyser les comportements physiques du système
+%     \item Valider les résultats numériques par comparaison avec des expériences
+% \end{itemize}
+
+\subsection{Approche traditionnelle : la méthode RK4}
+\subsubsection{Principe de la méthode}
+La méthode Runge-Kutta d'ordre 4 (RK4) est une méthode classique de résolution numérique des équations différentielles. Elle approxime la solution en combinant quatre évaluations de la fonction dérivée à différents points intermédiaires :
+\begin{equation}
+    u_{n+1} = u_n + \frac{h}{6}(k_1 + 2k_2 + 2k_3 + k_4)
+    \label{eq:rk4}
+    \end{equation}
+    
+    % où les coefficients $k_i$ sont calculés comme suit :
+    % \begin{align}
+    % k_1 &= f(t_n, u_n) \label{eq:k1} \\
+    % k_2 &= f(t_n + \frac{h}{2}, u_n + \frac{h}{2}k_1) \label{eq:k2} \\
+    % k_3 &= f(t_n + \frac{h}{2}, u_n + \frac{h}{2}k_2) \label{eq:k3} \\
+    % k_4 &= f(t_n + h, u_n + hk_3) \label{eq:k4}
+    % \end{align}
+    
+    \subsubsection{Interprétation géométrique}
+    Chaque coefficient représente une estimation de la pente en différents points de l'intervalle :
+    \begin{itemize}
+        \item $k_1$ : pente initiale au point $(t_n, u_n)$
+        \item $k_2$ : pente au point milieu, après un demi-pas utilisant $k_1$
+        \item $k_3$ : pente au point milieu, après un demi-pas utilisant $k_2$
+        \item $k_4$ : pente finale, après un pas complet utilisant $k_3$
+    \end{itemize}
+    
+    % \begin{figure}[h]
+    %     \centering
+    %     \begin{tikzpicture}[scale=1.2]
+    %         % Solution exacte (courbe)
+    %         \draw[dashed, color=gray!40] plot[domain=0.5:3,smooth] 
+    %             (\x,{exp(0.4*\x)});
+            
+    %         % Axes
+    %         \draw[->] (-0.2,0) -- (3.2,0) node[right] {$t$};
+    %         \draw[->] (0,-0.2) -- (0,3.2) node[above] {$u$};
+            
+    %         % Point initial
+    %         \fill (1,1) circle (2pt) node[below left] {$(t_n, u_n)$};
+            
+    %         % Pentes avec points intermédiaires
+    %         \draw[red,thick,->] (1,1) -- (1.5,1.4) node[right] {$k_1$};
+    %         \fill[red] (1.25,1.2) circle (1.5pt) node[below right] {$p_1$};
+            
+    %         \draw[blue,thick,->] (1.25,1.2) -- (1.75,1.65) node[right] {$k_2$};
+    %         \fill[blue] (1.25,1.2) circle (1.5pt) node[above left] {$p_2$};
+            
+    %         \draw[green!60!black,thick,->] (1.25,1.2) -- (1.75,1.7) node[right] {$k_3$};
+    %         \fill[green!60!black] (1.25,1.2) circle (1.5pt) node[below right] {$p_3$};
+            
+    %         \draw[orange,thick,->] (1.5,1.4) -- (2,1.95) node[right] {$k_4$};
+    %         \fill[orange] (1.5,1.4) circle (1.5pt) node[below right] {$p_4$};
+            
+    %         % Point final approximé
+    %         \fill (2,1.8) circle (2pt) node[right] {$(t_{n+1}, u_{n+1})$};
+            
+    %         % Pas de temps h
+    %         \draw[<->] (1,-0.1) -- (2,-0.1) node[midway,below] {$h$};
+    %     \end{tikzpicture}
+    %     \caption{Illustration géométrique de la méthode RK4}
+    %     \label{fig:rk4_geometrique}
+    % \end{figure}
+    
+    \subsubsection{Limitations de la parallélisation}
+    La méthode RK4, bien que précise, présente une limitation fondamentale pour la parallélisation : sa nature intrinsèquement séquentielle. Cette séquentialité provient de deux aspects :
+    
+    \begin{enumerate}
+        \item \textbf{Dépendance temporelle} : Chaque pas de temps dépend directement du résultat du pas précédent :
+        \begin{equation}
+        u_{n+1} = \Phi_{\text{RK4}}(u_n)
+        \end{equation}
+        
+        \item \textbf{Dépendance interne} : Les coefficients $k_i$ doivent être calculés dans l'ordre, chacun dépendant des précédents :
+        \begin{equation}
+        k_i = f(k_1, \ldots, k_{i-1})
+        \end{equation}
+    \end{enumerate}
+    
+    Cette double dépendance rend impossible toute parallélisation directe de la méthode, car :
+    \begin{itemize}
+        \item Les pas de temps ne peuvent pas être calculés indépendamment
+        \item Les étages internes de RK4 doivent être calculés séquentiellement
+    \end{itemize}
+    
+    L'algorithme Parareal, présenté en détail dans la section suivante, propose une solution à ce problème en brisant la barrière de la séquentialité temporelle.
+    
+    
+
+\subsection{Objectifs et organisation du document}
+Notre travail se concentre sur la résolution numérique efficace de ce système de Lorenz, en particulier :
+\begin{itemize}
+    \item La résolution séquentielle avec la méthode RK4
+    \item La tentative de parallélisation temporelle avec MPI via l'algorithme Parareal
+    \item L'implémentation de l'algorithme Parareal pour le système de Lorenzs
+    \item L'analyse des performances et de la précision
+\end{itemize}
+
+Ce document est structuré comme suit :
+\begin{itemize}
+    \item La section \ref{sec:algorithme_parareal} présente en détail l'algorithme Parareal
+    \item La section \ref{sec:implementation} décrit notre implémentation
+    \item La section \ref{sec:resultats} analyse les performances et résultats obtenus
+    \item La section \ref{sec:conclusion} discute les implications et perspectives futures
+\end{itemize}

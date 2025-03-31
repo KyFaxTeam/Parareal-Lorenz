@@ -1,0 +1,117 @@
+% Implementation slides
+
+\begin{frame}{Architecture logicielle}
+    \begin{itemize}
+        \item \textbf{Architecture modulaire à trois niveaux}
+        \begin{enumerate}
+            \item Programme principal (main.f90)
+            \item Modules principaux
+            \begin{itemize}
+                \item Solveurs
+                \item Parareal
+                \item Décomposition
+            \end{itemize}
+            \item Sous-modules spécialisés
+        \end{enumerate}
+        \item \textbf{Séparation claire des responsabilités}
+        \begin{itemize}
+            \item Logique de calcul
+            \item Parallélisation
+            \item Gestion des données
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Composants principaux}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \textbf{Programme principal}
+        \begin{itemize}
+            \item Gestion des arguments
+            \item Initialisation MPI
+            \item Distribution des tâches
+            \item Mesure des performances
+        \end{itemize}
+        
+        \column{0.5\textwidth}
+        \textbf{Module de solveurs}
+        \begin{itemize}
+            \item RK4 (haute précision)
+            \item AB2/AB3 (intermédiaire)
+            \item Euler (rapide)
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Adaptation aux régimes dynamiques}
+    \begin{itemize}
+        \item \textbf{Ajustement automatique des paramètres}
+    \end{itemize}
+    \begin{lstlisting}[basicstyle=\ttfamily, language=Fortran]
+! Ajustement selon le regime
+if (tau < 1.0) then  ! Non-marcheur
+    h_coarse = min(h_coarse, tau/20.0)
+    h_fine = min(h_fine, tau/200.0)
+elsif (tau < 3.0) then  ! Marche reguliere
+    h_coarse = min(h_coarse, tau/10.0)
+    h_fine = min(h_fine, tau/100.0)
+else  ! Regimes chaotiques
+    h_coarse = min(h_coarse, 0.1)
+    h_fine = min(h_fine, 0.01)
+end if
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}{Mécanismes de protection}
+    \begin{itemize}
+        \item \textbf{Gestion des instabilités}
+        \begin{itemize}
+            \item Détection des valeurs aberrantes
+            \item Limitation des amplitudes
+            \item Compteur d'erreurs
+        \end{itemize}
+        \vspace{0.3cm}
+        \item \textbf{Circuit breaker}
+        \begin{itemize}
+            \item Arrêt en cas d'instabilité répétée
+            \item Repli sur des paramètres plus conservateurs
+            \item Journalisation des événements
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Parallélisation et équilibrage}
+    \begin{itemize}
+        \item \textbf{Distribution des intervalles}
+        \begin{itemize}
+            \item Répartition équitable entre processus
+            \item Gestion du reste de la division
+            \item Adaptation à la charge
+        \end{itemize}
+        \vspace{0.3cm}
+        \item \textbf{Communications MPI}
+        \begin{itemize}
+            \item Échanges aux points de synchronisation
+            \item Réduction des données transférées
+            \item Optimisation des communications collectives
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Visualisation et analyse}
+    \begin{itemize}
+        \item \textbf{Densité des trajectoires selon} $\tau$
+        \begin{itemize}
+            \item 50 points/intervalle pour $\tau < 2.0$
+            \item 75 points/intervalle pour $2.0 \leq \tau < 5.0$
+            \item 100 points/intervalle pour $\tau \geq 5.0$
+        \end{itemize}
+        \vspace{0.3cm}
+        \item \textbf{Outils d'analyse}
+        \begin{itemize}
+            \item Scripts de post-traitement
+            \item Validation automatisée
+            \item Génération de rapports
+        \end{itemize}
+    \end{itemize}
+\end{frame}

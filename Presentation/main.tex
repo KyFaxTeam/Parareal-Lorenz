@@ -1,0 +1,102 @@
+\documentclass{beamer}
+
+% Configuration de l'encodage et support du français
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+
+% Choisissez un des thèmes en décommentant le bloc souhaité
+% dans themes.tex et en commentant les autres
+\input{themes}
+
+% Mathématiques et sciences
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{physics}
+\usepackage{siunitx}
+
+% Graphiques et figures
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepackage{graphicx}
+\usepackage{subcaption}
+
+% Code listings setup
+\usepackage{listings}
+\usepackage{textcomp}
+\definecolor{codecolor}{RGB}{0,0,0}
+\lstdefinelanguage{fortran}{
+  morekeywords={program,subroutine,function,module,use,implicit,none,
+    type,end,contains,integer,real,double,precision,complex,character,
+    logical,parameter,dimension,allocatable,intent,in,out,inout,if,then,
+    else,endif,do,while,enddo,case,select,call,return,print,write,read},
+  sensitive=false,
+  morecomment=[l]!,
+  morestring=[b]",
+  morestring=[b]'
+}
+\lstset{
+    language=fortran,
+    basicstyle=\ttfamily\tiny,
+    breaklines=true,
+    commentstyle=\color{green!60!black},
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    numbers=none,
+    backgroundcolor=\color{backgroundgray},
+    frame=single,
+    tabsize=2,
+    escapeinside={(*@}{@*)},
+    literate={~}{$\sim$}{1}
+}
+
+% Title page information
+\definecolor{titlecolor}{RGB}{0, 51, 102} % Bleu professionnel foncé
+\definecolor{subtitlecolor}{RGB}{70, 130, 180} % Bleu acier plus doux
+\definecolor{authorcolor}{RGB}{25, 25, 112} % Bleu marine
+\definecolor{institutioncolor}{RGB}{47, 79, 79} % Vert de gris foncé
+
+
+
+
+
+% Custom commands for better formatting
+\newcommand{\secframe}[1]{%
+    \begin{frame}
+        \frametitle{#1}
+        \tableofcontents[currentsection]
+    \end{frame}
+}
+
+\begin{document}
+
+% % Title pages
+\input{sections/titlepage}
+
+% Main content
+\section{Introduction}
+\secframe{Introduction}
+\input{sections/introduction}
+
+\section{Méthode RK4}
+\secframe{Méthode RK4}
+\input{sections/rk4}
+
+\section{Algorithme Parareal}
+\secframe{Algorithme Parareal}
+\input{sections/algorithme_parareal}
+
+\section{Implémentation}
+\secframe{Implémentation}
+\input{sections/implementation}
+
+\section{Résultats et analyse comparative}
+\secframe{Résultats et analyse comparative}
+\input{sections/resultats}
+
+\section{Conclusion et perspectives}
+\secframe{Conclusion et perspectives}
+\input{sections/conclusion}
+
+\end{document}

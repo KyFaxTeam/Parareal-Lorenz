@@ -1,0 +1,78 @@
+% Option 1: Theme Berlin - Professional and modern
+% \usetheme{Berlin}
+% \usecolortheme{dolphin}
+% \useinnertheme{circles}
+
+% Option 2: Theme Singapore - Clean and minimalist
+% \usetheme{Singapore}
+% \usecolortheme{orchid}
+% \useinnertheme{rectangles}
+
+% Option 3: Theme Copenhagen - Academic and elegant
+% \usetheme{Copenhagen}
+% \usecolortheme{seahorse}
+% \useoutertheme{infolines}
+
+% Option 4: Theme Dresden - Classic with sidebar
+\usetheme{Dresden}
+\usecolortheme{default}
+\useoutertheme{sidebar}
+
+% Personnalisation pour arrondir les bords des barres
+\setbeamertemplate{blocks}[rounded][shadow=true]
+\makeatletter
+% Arrondir les bords des barres
+\setbeamertemplate{sidebar canvas left}[default]
+\setbeamercolor{block title}{bg=primaryblue!80!white,fg=white}
+\setbeamercolor{block body}{bg=primaryblue!10!white}
+\setbeamercolor{block alerted title}{bg=accentorange!80!white,fg=white}
+% \setbeamercolor{structure}{fg=secondaryblue} % Using the lighter blue defined in your theme
+
+% Option 5: Theme Luebeck - Modern with header
+% \usetheme{Luebeck}
+% \usecolortheme{rose}
+% \useoutertheme{miniframes}
+
+% Pour utiliser, décommentez le thème souhaité dans main.tex
+% et commentez les autres thèmes.
+
+% Personnalisation commune
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{section in toc}[sections numbered]
+\setbeamertemplate{subsection in toc}[subsections numbered]
+
+% Couleurs personnalisées (adaptez selon le thème choisi)
+\definecolor{primaryblue}{HTML}{1f77b4}
+\definecolor{secondaryblue}{HTML}{7BA6C4}
+\definecolor{accentorange}{HTML}{ff7f0e}
+\definecolor{tertiarygreen}{HTML}{2ca02c}
+\definecolor{backgroundgray}{HTML}{f7f7f7}
+
+% Recommendations par thème:
+%
+% Berlin + dolphin:
+% - Professionnel et moderne
+% - Excellent pour les présentations techniques
+% - Navigation claire avec la barre du haut
+%
+% Singapore + orchid:
+% - Minimaliste et élégant
+% - Met l'accent sur le contenu
+% - Parfait pour les présentations scientifiques
+%
+% Copenhagen + seahorse:
+% - Style académique traditionnel
+% - Bonne hiérarchie visuelle
+% - Navigation simple et efficace
+%
+% Dresden + beaver:
+% - Sidebar pour navigation rapide
+% - Bon pour les longues présentations
+% - Structure claire avec sections/sous-sections
+%
+% Luebeck + rose:
+% - Design moderne avec en-tête
+% - Excellent contraste
+% - Navigation intuitive

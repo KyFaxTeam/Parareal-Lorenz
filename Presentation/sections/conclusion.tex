@@ -1,0 +1,38 @@
+% Conclusion slides
+
+\begin{frame}{Synthèse des résultats}
+    \begin{itemize}
+        \item \textbf{Objectifs atteints}
+        \begin{itemize}
+            \item Parallélisation temporelle efficace
+            \item Précision comparable à RK4 séquentiel
+            \item Convergence robuste en régime chaotique
+        \end{itemize}
+        \vspace{0.3cm}
+        \item \textbf{Gains de performance}
+        \begin{itemize}
+            \item Accélération significative
+            \item Maintien de la qualité numérique
+            \item Scalabilité démontrée
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Limitations actuelles}
+    \begin{itemize}
+        \item \textbf{Contraintes identifiées}
+        \begin{itemize}
+            \item Sensibilité à la taille des intervalles
+            \item Divergence possible avec Euler comme solveur grossier
+            \item Scalabilité limitée à 6 processeurs dans notre étude
+        \end{itemize}
+        \vspace{0.3cm}
+        \item \textbf{Points d'amélioration}
+        \begin{itemize}
+            \item Adaptation dynamique des intervalles
+            \item Optimisation des communications MPI
+            \item Extension à plus de processeurs
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
